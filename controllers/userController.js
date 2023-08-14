@@ -89,12 +89,16 @@ const getUser = async (req, res) => {
   try {
     const user = await User.findOne({
       where: { id: req.user.id },
-      exclude: ["password"],
-        includes: [
-      {
-        model: Image,
-        as: "images"
-      }
+      attributes: {exclude: ["password"]},
+      include: [
+        {
+          where: {
+            postId: null
+          },
+          model: Image,
+          attributes: ["path"],
+          as: "images"
+        }
     ]
     });
     console.log(user)

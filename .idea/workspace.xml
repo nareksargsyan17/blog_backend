@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8dc2da7c-ebbb-4717-85aa-de700521ba15" name="Changes" comment="" />
+    <list default="true" id="8dc2da7c-ebbb-4717-85aa-de700521ba15" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/userController.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/userController.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,10 +22,10 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/middleware/authMiddleware.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/routes/api/user/userRoute.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/routes/api/user.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/api/user/userRoute.js" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/controllers/userController.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/middleware/authMiddleware.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="2TkuOtkpfBEh5rsXXfH8ot45R6M" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -37,7 +40,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="18.16.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="18.16.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../amazon-api" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -129,6 +132,8 @@
       <workItem from="1692020493105" duration="921000" />
       <workItem from="1692022561842" duration="82000" />
       <workItem from="1692022763900" duration="29000" />
+      <workItem from="1692023209860" duration="12000" />
+      <workItem from="1692023233114" duration="2152000" />
     </task>
     <servers />
   </component>
