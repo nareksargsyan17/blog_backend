@@ -22,7 +22,6 @@ const likeMiddleware = async (req, res, next) => {
 
 
   if (like) {
-    console.log(like.id)
     try {
       await Like.destroy({
         where: {
@@ -30,7 +29,7 @@ const likeMiddleware = async (req, res, next) => {
         }
       })
       return res.status(200).send(({
-        successMessage: "disLike"
+        successMessage: post.id
       }))
     } catch (error) {
       return res.status(500).send(({

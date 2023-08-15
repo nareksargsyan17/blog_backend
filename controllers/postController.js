@@ -7,9 +7,41 @@ const addPost = async (req, res) => {
     data.ownerId = req.user.id;
     await postSchema.validateAsync(data)
     const post = await Post.create(data);
+    const postData = await Post.findOne({
+      where: {
+        id: post.id
+      },
+      include: [
+        {
+          model: User,
+          as: "owner",
+          attributes: ["firstName", "lastName", "id"],
+          include: [
+            {
+              where: {
+                postId: null
+              },
+              model: Image,
+              attributes: ["path"],
+              as: "images"
+            }
+          ]
+        },
+        {
+          model: User,
+          as : "likes",
+          attributes: ["firstName", "lastName"],
+        },
+        {
+          model: User,
+          as : "comments",
+          attributes: ["firstName", "lastName"],
+        }
+      ]
+    })
 
     return res.status(200).send({
-      data: post
+      data: postData
     })
   } catch (error) {
 
@@ -34,7 +66,7 @@ const getPosts = async (req, res) => {
         {
           model: User,
           as: "owner",
-          attributes: ["firstName", "lastName"],
+          attributes: ["firstName", "lastName", "id"],
           include: [
             {
               where: {
@@ -54,12 +86,12 @@ const getPosts = async (req, res) => {
         {
           model: User,
           as : "likes",
-          attributes: ["firstName", "lastName"],
+          attributes: ["firstName", "lastName",  "id"],
         },
         {
           model: User,
           as : "comments",
-          attributes: ["firstName", "lastName"],
+          attributes: ["firstName", "lastName", "id"],
         }
       ]
     })
@@ -84,7 +116,8 @@ const getPostById = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["firstName", "lastName"],
+          as: "owner",
+          attributes: ["firstName", "lastName", "id"],
           include: [
             {
               where: {
@@ -104,7 +137,12 @@ const getPostById = async (req, res) => {
         {
           model: User,
           as : "likes",
-          attributes: ["firstName", "lastName"],
+          attributes: ["firstName", "lastName",  "id"],
+        },
+        {
+          model: User,
+          as : "comments",
+          attributes: ["firstName", "lastName", "id"],
         }
       ]
     })

@@ -1,11 +1,12 @@
 const { Image } = require("../models")
+const {Op} = require("sequelize");
 
 const uploadImages = async (req, res) => {
   try {
     const { id } = req.params;
     const image = req.file;
-    console.log(image)
     let currImage;
+    let createdImage;
 
     if (id) {
       currImage = {
@@ -13,20 +14,27 @@ const uploadImages = async (req, res) => {
         postId: id,
         path: image.path
       }
+      createdImage = await Image.create(currImage);
     } else {
       currImage = {
         userId: req.user.id,
         postId: null,
         path: image.path
       }
+      createdImage = await Image.update(currImage, {where: {
+        [Op.and] : [
+          {
+            userId: currImage.userId
+          },
+          {
+            postId: null
+          }
+        ]
+        }});
     }
 
-
-
-    await Image.create(currImage);
-
     return res.status(200).send({
-      successMessage: "uploaded"
+      data: createdImage.path
     });
   } catch (error) {
     return res.status(500).send({

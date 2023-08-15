@@ -44,7 +44,7 @@ const login = async (req, res) => {
     const { email } = req.body;
 
     const user = await User.findOne({ where: { email }, attributes: {exclude: ["password"]}});
-
+    await Image.create({userId: user.id, path: "public\\images\\download.png", postId: null})
     let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {});
 
     return res.status(200).send({
