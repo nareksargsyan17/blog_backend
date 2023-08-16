@@ -29,7 +29,7 @@ const likeMiddleware = async (req, res, next) => {
         }
       })
       return res.status(200).send(({
-        successMessage: post.id
+        successMessage: "disLike"
       }))
     } catch (error) {
       return res.status(500).send(({

@@ -1,4 +1,4 @@
-const { Post, User, Image, Like } = require("../models")
+const { Post, User, Image, Comment } = require("../models")
 const postSchema  = require("../validations/postSchema");
 
 const addPost = async (req, res) => {
@@ -36,6 +36,11 @@ const addPost = async (req, res) => {
           model: User,
           as : "comments",
           attributes: ["firstName", "lastName"],
+        },
+        {
+          required: false,
+          model: Comment,
+          as : "postComments",
         }
       ]
     })
@@ -91,7 +96,12 @@ const getPosts = async (req, res) => {
         {
           model: User,
           as : "comments",
-          attributes: ["firstName", "lastName", "id"],
+          attributes: ["firstName", "lastName",  "id"],
+        },
+        {
+          required: false,
+          model: Comment,
+          as : "postComments",
         }
       ]
     })
@@ -142,11 +152,15 @@ const getPostById = async (req, res) => {
         {
           model: User,
           as : "comments",
-          attributes: ["firstName", "lastName", "id"],
+          attributes: ["firstName", "lastName",  "id"],
+        },
+        {
+          required: false,
+          model: Comment,
+          as : "postComments",
         }
       ]
     })
-
     return res.status(200).send({
       data: post
     })

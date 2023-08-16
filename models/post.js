@@ -20,6 +20,7 @@ module.exports = (sequelize) => {
 
       this.belongsToMany(User, { through: Comment, foreignKey: "postId", otherKey: "userId", onDelete: "cascade", as: "comments" });
 
+      this.hasMany(Comment, {foreignKey: "postId", as: "postComments"})
     }
   }
   Post.init({

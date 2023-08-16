@@ -9,7 +9,7 @@ const likePost = async (req, res) => {
     })
 
     return res.status(200).send({
-      successMessage: id,
+      successMessage: "like",
     })
   } catch (error) {
     return res.status(500).send({

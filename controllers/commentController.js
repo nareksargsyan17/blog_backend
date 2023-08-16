@@ -1,5 +1,6 @@
 const { Comment } = require("../models")
 const commentSchema = require("../validations/commentSchema");
+const {Op} = require("sequelize");
 
 const addComment = async (req, res) => {
   try {
@@ -21,6 +22,7 @@ const addComment = async (req, res) => {
 
 const getComments = async (req, res) => {
   try {
+    const { id } = req.params;
     const { parent } = req.query;
     let parentId;
     if (parent === "null") {
@@ -29,8 +31,18 @@ const getComments = async (req, res) => {
       parentId = parent;
     }
     const comments = await Comment.findAll({
+      order: [
+          ["createdAt", "DESC"]
+        ],
       where: {
-        parentId : parentId,
+        [Op.and] : [
+          {
+            parentId : parentId,
+          },
+          {
+            postId: id
+          }
+        ]
       }
     })
     const data = [];

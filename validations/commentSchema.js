@@ -10,6 +10,7 @@ const commentSchema = Joi.object({
     .integer()
     .required(),
   parentId: Joi.number()
+      .allow(null)
 })
 
 module.exports = commentSchema
