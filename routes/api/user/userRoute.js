@@ -5,7 +5,6 @@ const upload = require("../../../config/imageConfig");
 const {uploadImages} = require("../../../controllers/imageController");
 
 router.put("/change_pass",  checkingPass, changePassword);
-router.post("/upload", upload.single("image"), uploadImages);
 router.get("/get/user", getUser)
 
 

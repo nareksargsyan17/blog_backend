@@ -27,6 +27,10 @@ module.exports = {
         },
         onDelete: "cascade"
       },
+      image: {
+        type: STRING,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: DATE

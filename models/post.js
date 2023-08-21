@@ -10,9 +10,7 @@ module.exports = (sequelize) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      const { Image, User, Like, Comment } = models;
-
-      this.hasOne(Image, { foreignKey: "postId", as: "images" });
+      const {  User, Like, Comment } = models;
 
       this.belongsTo(User, { foreignKey: "ownerId", as: "owner" });
 
@@ -40,6 +38,10 @@ module.exports = (sequelize) => {
         key: "id"
       },
       onDelete: "cascade"
+    },
+    image: {
+      type: STRING,
+      allowNull: false
     },
     createdAt: {
       allowNull: false,

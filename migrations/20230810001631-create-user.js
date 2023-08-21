@@ -26,6 +26,10 @@ module.exports = {
         type: STRING,
         allowNull: false
       },
+      avatar: {
+        type: STRING,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: DATE

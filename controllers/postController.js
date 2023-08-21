@@ -3,9 +3,12 @@ const postSchema  = require("../validations/postSchema");
 
 const addPost = async (req, res) => {
   try {
+    console.log("req.body------", req.body)
     const { ...data } = req.body;
     data.ownerId = req.user.id;
-    await postSchema.validateAsync(data)
+    data.image = req.file.path
+    console.log(data)
+    await postSchema.validateAsync(data);
     const post = await Post.create(data);
     const postData = await Post.findOne({
       where: {
@@ -15,27 +18,17 @@ const addPost = async (req, res) => {
         {
           model: User,
           as: "owner",
-          attributes: ["firstName", "lastName", "id"],
-          include: [
-            {
-              where: {
-                postId: null
-              },
-              model: Image,
-              attributes: ["path"],
-              as: "images"
-            }
-          ]
+          attributes: ["firstName", "lastName", "id", "avatar"]
         },
         {
           model: User,
           as : "likes",
-          attributes: ["firstName", "lastName"],
+          attributes: ["firstName", "lastName", "avatar"],
         },
         {
           model: User,
           as : "comments",
-          attributes: ["firstName", "lastName"],
+          attributes: ["firstName", "lastName", "avatar"],
         },
         {
           required: false,
@@ -71,32 +64,17 @@ const getPosts = async (req, res) => {
         {
           model: User,
           as: "owner",
-          attributes: ["firstName", "lastName", "id"],
-          include: [
-            {
-              where: {
-                postId: null
-              },
-              model: Image,
-              attributes: ["path"],
-              as: "images"
-            }
-          ]
-        },
-        {
-          model: Image,
-          attributes: ["path"],
-          as: "images"
+          attributes: ["firstName", "lastName", "id", "avatar"]
         },
         {
           model: User,
           as : "likes",
-          attributes: ["firstName", "lastName",  "id"],
+          attributes: ["firstName", "lastName",  "id", "avatar"],
         },
         {
           model: User,
           as : "comments",
-          attributes: ["firstName", "lastName",  "id"],
+          attributes: ["firstName", "lastName",  "id", "avatar"],
         },
         {
           required: false,
@@ -127,32 +105,17 @@ const getPostById = async (req, res) => {
         {
           model: User,
           as: "owner",
-          attributes: ["firstName", "lastName", "id"],
-          include: [
-            {
-              where: {
-                postId: null
-              },
-              model: Image,
-              attributes: ["path"],
-              as: "images"
-            }
-          ]
-        },
-        {
-          model: Image,
-          attributes: ["path"],
-          as: "images"
+          attributes: ["firstName", "lastName", "id", "avatar"]
         },
         {
           model: User,
           as : "likes",
-          attributes: ["firstName", "lastName",  "id"],
+          attributes: ["firstName", "lastName",  "id", "avatar"],
         },
         {
           model: User,
           as : "comments",
-          attributes: ["firstName", "lastName",  "id"],
+          attributes: ["firstName", "lastName",  "id", "avatar"],
         },
         {
           required: false,

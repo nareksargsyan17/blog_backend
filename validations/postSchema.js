@@ -7,6 +7,8 @@ const postSchema = Joi.object({
     .required(),
   ownerId: Joi.number()
     .integer(),
+  image: Joi.any()
+      .required()
 })
 
 module.exports = postSchema

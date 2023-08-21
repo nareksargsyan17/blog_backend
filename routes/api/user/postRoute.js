@@ -3,7 +3,7 @@ const { addPost } = require("../../../controllers/postController");
 const upload = require("../../../config/imageConfig");
 const { uploadImages } = require("../../../controllers/imageController");
 
-router.post("/add", addPost);
+router.post("/add", upload.single("image"), addPost);
 router.post("/upload/:id", upload.single("image"), uploadImages);
 
 module.exports = router;

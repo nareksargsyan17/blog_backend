@@ -7,9 +7,8 @@ require("dotenv").config()
 
 const registration = async (req, res) => {
  try {
-   console.log(req)
    const { ...data } = req.body;
-   console.log(data)
+   data.avatar = "public\\images\\download.png"
    await userSchema.validateAsync(data);
 
    const user = await User.findOne({
@@ -44,7 +43,6 @@ const login = async (req, res) => {
     const { email } = req.body;
 
     const user = await User.findOne({ where: { email }, attributes: {exclude: ["password"]}});
-    await Image.create({userId: user.id, path: "public\\images\\download.png", postId: null})
     let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {});
 
     return res.status(200).send({
@@ -89,17 +87,7 @@ const getUser = async (req, res) => {
   try {
     const user = await User.findOne({
       where: { id: req.user.id },
-      attributes: {exclude: ["password"]},
-      include: [
-        {
-          where: {
-            postId: null
-          },
-          model: Image,
-          attributes: ["path"],
-          as: "images"
-        }
-    ]
+      attributes: {exclude: ["password"]}
     });
     console.log(user)
     return res.status(200).send({

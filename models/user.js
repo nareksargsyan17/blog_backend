@@ -14,11 +14,11 @@ module.exports = (sequelize) => {
 
       this.hasMany(Post, { foreignKey: "ownerId", as: "posts" });
 
-      this.hasOne(Image, { foreignKey: "userId", as: "images" });
+      this.belongsToMany(Post, { through: Like, foreignKey: "userId", otherKey: "postId", onDelete: "cascade", as: "likes" });
 
-      this.belongsToMany(Post, { through: Like, foreignKey: "userId", otherKey: "postId", onDelete: "cascade", as: "likes" })
+      this.belongsToMany(Post, { through: Comment, foreignKey: "userId", otherKey: "postId", onDelete: "cascade", as: "comments" });
 
-      this.belongsToMany(Post, { through: Comment, foreignKey: "userId", otherKey: "postId", onDelete: "cascade", as: "comments" })
+      this.hasMany(Comment, {foreignKey: "userId", as: "owner"})
     }
   }
   User.init({
@@ -35,6 +35,10 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     password: {
+      type: STRING,
+      allowNull: false
+    },
+    avatar: {
       type: STRING,
       allowNull: false
     },

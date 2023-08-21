@@ -30,7 +30,8 @@ const userSchema = Joi.object({
     .required(),
   re_password: Joi.any()
     .equal(Joi.ref('password'))
-    .required()
+    .required(),
+  avatar: Joi.string()
 })
 
 exports.userSchema = userSchema;
