@@ -3,11 +3,9 @@ const postSchema  = require("../validations/postSchema");
 
 const addPost = async (req, res) => {
   try {
-    console.log("req.body------", req.body)
     const { ...data } = req.body;
     data.ownerId = req.user.id;
     data.image = req.file.path
-    console.log(data)
     await postSchema.validateAsync(data);
     const post = await Post.create(data);
     const postData = await Post.findOne({
@@ -72,8 +70,47 @@ const getPosts = async (req, res) => {
           attributes: ["firstName", "lastName",  "id", "avatar"],
         },
         {
+          required: false,
+          model: Comment,
+          as : "postComments",
+        }
+      ]
+    })
+
+    return res.status(200).send({
+      data: posts
+    })
+  } catch (error) {
+
+    return res.status(500).send({
+      message: error.message
+    })
+  }
+}
+
+const getUserPosts = async (req, res) => {
+  try {
+    const { page } = req.query;
+    const { id } = req.params
+
+    const posts = await Post.findAll({
+      where: {
+        ownerId: id
+      },
+      order: [
+        ["createdAt", "DESC"]
+      ],
+      limit: 10,
+      offset: (page - 1) * 10,
+      include: [
+        {
           model: User,
-          as : "comments",
+          as: "owner",
+          attributes: ["firstName", "lastName", "id", "avatar"]
+        },
+        {
+          model: User,
+          as : "likes",
           attributes: ["firstName", "lastName",  "id", "avatar"],
         },
         {
@@ -83,6 +120,52 @@ const getPosts = async (req, res) => {
         }
       ]
     })
+
+    return res.status(200).send({
+      data: posts
+    })
+  } catch (error) {
+
+    return res.status(500).send({
+      message: error.message
+    })
+  }
+}
+
+const getUserLikedPosts = async (req, res) => {
+  try {
+    const { page } = req.query;
+    const { id } = req.params;
+    console.log("page", page)
+
+    const posts = await Post.findAll({
+      order: [
+        ["createdAt", "DESC"]
+      ],
+      limit: 10,
+      offset: (page - 1) * 10,
+      include: [
+        {
+          model: User,
+          as: "owner",
+          attributes: ["firstName", "lastName", "id", "avatar"]
+        },
+        {
+          where: {
+            id
+          },
+          model: User,
+          as : "likes",
+          attributes: ["firstName", "lastName",  "id", "avatar"],
+        },
+        {
+          required: false,
+          model: Comment,
+          as : "postComments",
+        }
+      ]
+    })
+    console.log("posts----------", posts)
 
     return res.status(200).send({
       data: posts
@@ -133,10 +216,31 @@ const getPostById = async (req, res) => {
       message: error.message
     })
   }
-}
+};
+
+const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Post.destroy({
+      where: {
+        id
+      }
+    })
+    return res.status(200).send({
+      data: id
+    })
+  } catch (error) {
+    return res.status(400).send({
+      message: error.message
+    })
+  }
+};
 
 module.exports = {
   addPost,
   getPosts,
-  getPostById
+  getPostById,
+  deletePost,
+  getUserPosts,
+  getUserLikedPosts
 }

@@ -52,7 +52,6 @@ const login = async (req, res) => {
       }
     });
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       message: "Something is wrong!"
     })
@@ -89,12 +88,10 @@ const getUser = async (req, res) => {
       where: { id: req.user.id },
       attributes: {exclude: ["password"]}
     });
-    console.log(user)
     return res.status(200).send({
       data: user
     });
   } catch (error) {
-    console.log(error)
     return res.status(500).json({
       message: "Something is wrong!"
     })

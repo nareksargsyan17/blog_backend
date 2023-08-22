@@ -3,6 +3,7 @@ const { User } = require("../models");
 module.exports = async function validateId(req, res, next) {
   try {
     const { id } = req.params;
+    console.log(id)
     const user = await User.findByPk(id);
     if (user) {
       req.user = user;

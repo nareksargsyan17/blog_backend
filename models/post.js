@@ -2,6 +2,7 @@
 const {
   Model, STRING, DATE, INTEGER
 } = require('sequelize');
+const fs = require("fs");
 module.exports = (sequelize) => {
   class Post extends Model {
     /**
@@ -19,6 +20,11 @@ module.exports = (sequelize) => {
       this.belongsToMany(User, { through: Comment, foreignKey: "postId", otherKey: "userId", onDelete: "cascade", as: "comments" });
 
       this.hasMany(Comment, {foreignKey: "postId", as: "postComments"})
+
+      this.beforeBulkDestroy(async (data) => {
+        const post = await this.findOne({ where: { id : data.where.id } });
+        fs.unlinkSync(post.dataValues.image)
+      });
     }
   }
   Post.init({

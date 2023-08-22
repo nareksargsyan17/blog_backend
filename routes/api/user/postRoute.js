@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const { addPost } = require("../../../controllers/postController");
+const { addPost, deletePost, getUserPosts, getUserLikedPosts} = require("../../../controllers/postController");
 const upload = require("../../../config/imageConfig");
-const { uploadImages } = require("../../../controllers/imageController");
+const validateId = require("../../../middleware/likedPostMiddleware");
 
 router.post("/add", upload.single("image"), addPost);
-router.post("/upload/:id", upload.single("image"), uploadImages);
+router.delete("/delete/:id", deletePost)
+router.get("/get/:userId/liked_posts", validateId, getUserLikedPosts);
 
 module.exports = router;
