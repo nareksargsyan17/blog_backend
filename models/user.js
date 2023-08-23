@@ -2,6 +2,7 @@
 const {
   Model, STRING, DATE
 } = require('sequelize');
+const fs = require("fs");
 module.exports = (sequelize) => {
   class User extends Model {
     /**
@@ -18,7 +19,8 @@ module.exports = (sequelize) => {
 
       this.belongsToMany(Post, { through: Comment, foreignKey: "userId", otherKey: "postId", onDelete: "cascade", as: "comments" });
 
-      this.hasMany(Comment, {foreignKey: "userId", as: "owner"})
+      this.hasMany(Comment, {foreignKey: "userId", as: "owner"});
+
     }
   }
   User.init({

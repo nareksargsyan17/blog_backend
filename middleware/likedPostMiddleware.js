@@ -7,7 +7,7 @@ module.exports = async function validateId(req, res, next) {
       const token = req.headers.authorization.split(" ")[1];
       const { id } = jwt.verify(token, process.env.SECRET_KEY);
       console.log(id, "and", userId)
-      if (userId === id) {
+      if (parseInt(userId) === parseInt(id)) {
          const user = await User.findByPk(id);
          if (user) {
             req.user = user;
@@ -24,6 +24,7 @@ module.exports = async function validateId(req, res, next) {
       }
 
    } catch (error) {
+      console.log(error)
       return res.json({
          message: "Something is wrong"
       })

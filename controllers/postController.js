@@ -1,5 +1,6 @@
-const { Post, User, Image, Comment } = require("../models")
+const { Post, User, Like, Comment } = require("../models")
 const postSchema  = require("../validations/postSchema");
+const { Op } = require("sequelize");
 
 const addPost = async (req, res) => {
   try {
@@ -135,10 +136,23 @@ const getUserPosts = async (req, res) => {
 const getUserLikedPosts = async (req, res) => {
   try {
     const { page } = req.query;
-    const { id } = req.params;
+    const { userId } = req.params;
     console.log("page", page)
 
+    const likedPosts = await Like.findAll({
+      where: {
+        userId
+      }
+    });
+    const postsId = likedPosts.map(elem => elem.postId)
+
+    console.log(postsId)
     const posts = await Post.findAll({
+      where: {
+        id: {
+          [Op.in]: postsId
+        }
+      },
       order: [
         ["createdAt", "DESC"]
       ],
@@ -151,9 +165,6 @@ const getUserLikedPosts = async (req, res) => {
           attributes: ["firstName", "lastName", "id", "avatar"]
         },
         {
-          where: {
-            id
-          },
           model: User,
           as : "likes",
           attributes: ["firstName", "lastName",  "id", "avatar"],
@@ -165,7 +176,6 @@ const getUserLikedPosts = async (req, res) => {
         }
       ]
     })
-    console.log("posts----------", posts)
 
     return res.status(200).send({
       data: posts
@@ -236,11 +246,36 @@ const deletePost = async (req, res) => {
   }
 };
 
+const editPost = async (req, res) => {
+  try {
+    const { ...data } = req.body;
+    const { id } = req.params;
+
+    await Post.update(data, {
+      where: {
+        id
+      }
+    })
+
+    const updated = await Post.findByPk(id);
+    return res.status(200).send({
+      data: updated
+    })
+
+  } catch (error) {
+
+    return res.status(400).send({
+      message: error.message
+    })
+  }
+}
+
 module.exports = {
   addPost,
   getPosts,
   getPostById,
   deletePost,
   getUserPosts,
-  getUserLikedPosts
+  getUserLikedPosts,
+  editPost
 }

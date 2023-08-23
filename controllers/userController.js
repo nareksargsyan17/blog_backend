@@ -3,6 +3,7 @@ const { User, Image } =  require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { changePassSchema } = require("../validations/changePassSchema");
+const fs = require("fs");
 require("dotenv").config()
 
 const registration = async (req, res) => {
@@ -98,9 +99,58 @@ const getUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findByPk(id, {attributes: ["firstName", "lastName", "id", "avatar"]});
+    return res.status(200).send({
+      data: user
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Something is wrong!"
+    })
+  }
+};
+
+
+const editUser = async (req, res) => {
+  try {
+    const { ...data } = req.body;
+    if (req?.file?.path) {
+      const user = await User.findByPk(req.user.id);
+      if (user.dataValues.avatar !== "public\\images\\download.png") {
+        fs.unlinkSync(user.dataValues.avatar);
+      }
+      data.avatar = req.file.path;
+    } else {
+      data.avatar = "public\\images\\download.png";
+    }
+
+    const updatedId = await User.update(data, {
+      where: {
+        id : req.user.id
+      }
+    })
+
+    const updatedUser = await User.findByPk(req.user.id, {
+      attributes: ["firstName", "lastName", "id", "avatar"]
+    });
+    return res.status(200).send({
+      data: updatedUser
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message
+    })
+  }
+}
+
 module.exports =  {
   registration,
   login,
   changePassword,
-  getUser
+  getUser,
+  getUserById,
+  editUser
 }
